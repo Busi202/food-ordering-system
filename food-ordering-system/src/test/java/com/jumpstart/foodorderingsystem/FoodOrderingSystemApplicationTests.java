@@ -1,4 +1,4 @@
-package food_ordering_system;
+package com.jumpstart.foodorderingsystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package food_ordering_system.entity;
+package com.jumpstart.foodorderingsystem.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 

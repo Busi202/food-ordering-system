@@ -1,4 +1,4 @@
-package food_ordering_system.repository;
+package com.jumpstart.foodorderingsystem.repository;
 //import foodorderingsystem.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 public class CategoryRepository {

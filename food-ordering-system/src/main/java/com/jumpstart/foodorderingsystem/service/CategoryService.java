@@ -1,4 +1,4 @@
-package food_ordering_system.service;
+package com.jumpstart.foodorderingsystem.service;
 /*import com.jumpstart.foodorderingsystem.entity.Category;import com.jumpstart.foodorderingsystem.repository.CategoryRepository;
 import org.springframework.stereotype.Service;*/
 
