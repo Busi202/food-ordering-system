@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import com.jumpstart.foodorderingsystem.exception.CategoryNotFoundException;
 
 /**
  * Implements category business logic.
@@ -20,6 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+
     @Override
     public List<CategoryDto> getAllCategories() {
 
@@ -30,5 +32,19 @@ public class CategoryServiceImpl implements CategoryService {
                         category.getId(),
                         category.getName()))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CategoryDto getCategoryById(Long id) {
+
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() ->
+                        new CategoryNotFoundException(
+                                "Category with id " + id + " was not found"));
+
+        return new CategoryDto(
+                category.getId(),
+                category.getName()
+        );
     }
 }
