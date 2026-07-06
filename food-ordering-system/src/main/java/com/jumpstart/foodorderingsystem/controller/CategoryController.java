@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.PutMapping;
+
 /**
  * Handles incoming HTTP requests
  * related to categories.
@@ -48,5 +50,16 @@ public class CategoryController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createdCategory);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDto> updateCategory(
+            @PathVariable Long id,
+            @Valid @RequestBody CategoryDto categoryDto) {
+
+        CategoryDto updatedCategory =
+                categoryService.updateCategory(id, categoryDto);
+
+        return ResponseEntity.ok(updatedCategory);
     }
 }
