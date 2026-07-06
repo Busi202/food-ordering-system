@@ -79,4 +79,14 @@ public class CategoryServiceImpl implements CategoryService {
                 updatedCategory.getName()
         );
     }
+    @Override
+    public void deleteCategory(Long id) {
+
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() ->
+                        new CategoryNotFoundException(
+                                "Category with id " + id + " was not found"));
+
+        categoryRepository.delete(category);
+    }
 }

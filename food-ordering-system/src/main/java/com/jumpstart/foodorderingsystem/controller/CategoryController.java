@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 /**
  * Handles incoming HTTP requests
@@ -61,5 +62,13 @@ public class CategoryController {
                 categoryService.updateCategory(id, categoryDto);
 
         return ResponseEntity.ok(updatedCategory);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteCategory(
+            @PathVariable Long id) {
+
+        categoryService.deleteCategory(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
