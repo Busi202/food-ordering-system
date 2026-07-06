@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
+import jakarta.validation.Valid;
 /**
  * Handles incoming HTTP requests
  * related to categories.
@@ -39,7 +40,7 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryDto> addCategory(
-            @RequestBody CategoryDto categoryDto) {
+            @Valid @RequestBody CategoryDto categoryDto){
 
         CategoryDto createdCategory =
                 categoryService.addCategory(categoryDto);
