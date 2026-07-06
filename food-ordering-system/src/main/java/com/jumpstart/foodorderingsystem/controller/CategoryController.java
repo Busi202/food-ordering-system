@@ -1,5 +1,6 @@
 package com.jumpstart.foodorderingsystem.controller;
 
+import com.jumpstart.foodorderingsystem.response.Response;
 import com.jumpstart.foodorderingsystem.dto.CategoryDto;
 import com.jumpstart.foodorderingsystem.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,44 +32,76 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<CategoryDto> getAllCategories() {
-        return categoryService.getAllCategories();
+    public ResponseEntity<Response<List<CategoryDto>>> getCategories() {
+
+        List<CategoryDto> categories =
+                categoryService.getAllCategories();
+
+        return ResponseEntity.ok(
+                Response.success(
+                        "Categories retrieved successfully",
+                        categories
+                )
+        );
     }
     @GetMapping("/{id}")
-    public CategoryDto getCategoryById(
+    public ResponseEntity<Response<CategoryDto>> getCategoryById(
             @PathVariable Long id) {
 
-        return categoryService.getCategoryById(id);
+        CategoryDto dto =
+                categoryService.getCategoryById(id);
+
+        return ResponseEntity.ok(
+                Response.success(
+                        "Category retrieved successfully",
+                        dto
+                )
+        );
     }
 
     @PostMapping
-    public ResponseEntity<CategoryDto> addCategory(
-            @Valid @RequestBody CategoryDto categoryDto){
+    public ResponseEntity<Response<CategoryDto>> addCategory(
+            @Valid @RequestBody CategoryDto categoryDto) {
 
         CategoryDto createdCategory =
                 categoryService.addCategory(categoryDto);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(createdCategory);
+                .body(
+                        Response.success(
+                                "Category created successfully",
+                                createdCategory
+                        )
+                );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDto> updateCategory(
+    public ResponseEntity<Response<CategoryDto>> updateCategory(
             @PathVariable Long id,
             @Valid @RequestBody CategoryDto categoryDto) {
 
         CategoryDto updatedCategory =
                 categoryService.updateCategory(id, categoryDto);
 
-        return ResponseEntity.ok(updatedCategory);
+        return ResponseEntity.ok(
+                Response.success(
+                        "Category updated successfully",
+                        updatedCategory
+                )
+        );
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(
+    public ResponseEntity<Response<Void>> deleteCategory(
             @PathVariable Long id) {
 
         categoryService.deleteCategory(id);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                Response.success(
+                        "Category deleted successfully",
+                        null
+                )
+        );
     }
 }
