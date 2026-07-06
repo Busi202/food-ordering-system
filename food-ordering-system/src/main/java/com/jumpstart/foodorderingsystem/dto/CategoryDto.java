@@ -1,21 +1,15 @@
-package com.jumpstart.foodorderingsystem.entity;
+package com.jumpstart.foodorderingsystem.dto;
 
-import jakarta.persistence.*;
-
-/**
- * Represents a category record stored in the category table.
- */
-@Entity
-@Table(name = "category")
-public class Category {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CategoryDto {
     private Long id;
-
     private String name;
 
-    public Category() {
+    public CategoryDto() {
+    }
+
+    public CategoryDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Long getId() {

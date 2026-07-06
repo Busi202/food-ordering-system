@@ -1,11 +1,17 @@
 package com.jumpstart.foodorderingsystem.controller;
 
-import com.jumpstart.foodorderingsystem.entity.Category;
+import com.jumpstart.foodorderingsystem.dto.CategoryDto;
 import com.jumpstart.foodorderingsystem.service.CategoryService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Handles incoming HTTP requests
+ * related to categories.
+ */
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
@@ -17,7 +23,7 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getCategories() {
+    public List<CategoryDto> getAllCategories() {
         return categoryService.getAllCategories();
     }
 }
