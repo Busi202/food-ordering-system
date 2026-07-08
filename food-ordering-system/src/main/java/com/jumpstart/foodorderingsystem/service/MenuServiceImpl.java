@@ -9,7 +9,11 @@ import com.jumpstart.foodorderingsystem.dto.MenuDto;
 import com.jumpstart.foodorderingsystem.response.Response;
 import org.springframework.stereotype.Service;
 import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import com.jumpstart.foodorderingsystem.exception.MenuNotFoundException;
 
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -39,22 +43,72 @@ public class MenuServiceImpl implements MenuService {
     private MenuDto toDto(Menu menu) {
 
         return MenuDto.builder()
-
                 .id(menu.getId())
-
                 .name(menu.getName())
-
                 .description(menu.getDescription())
-
                 .price(menu.getPrice())
-
                 .imageUrl(menu.getImageUrl())
-
                 .categoryId(menu.getCategory().getId())
-
                 .categoryName(menu.getCategory().getName())
-
                 .build();
+
+    }
+    @Override
+    public Response<Page<MenuDto>> getAllMenus(
+            Long categoryId,
+            String search,
+            int page,
+            int size,
+            String sort) {
+
+        String[] sortParts = sort.split(",");
+
+        Sort.Direction direction =
+                sortParts[1].equalsIgnoreCase("desc")
+                        ? Sort.Direction.DESC
+                        : Sort.Direction.ASC;
+
+        Pageable pageable = PageRequest.of(
+                page,
+                size,
+                Sort.by(direction, sortParts[0]));
+
+        Page<Menu> menuPage;
+
+        if (categoryId != null && search != null && !search.isBlank()) {
+
+            menuPage = menuRepository
+                    .findByCategoryIdAndNameContainingIgnoreCase(
+                            categoryId,
+                            search,
+                            pageable);
+
+        } else if (categoryId != null) {
+
+            menuPage = menuRepository
+                    .findByCategoryId(
+                            categoryId,
+                            pageable);
+
+        } else if (search != null && !search.isBlank()) {
+
+            menuPage = menuRepository
+                    .findByNameContainingIgnoreCase(
+                            search,
+                            pageable);
+
+        } else {
+
+            menuPage = menuRepository.findAll(pageable);
+
+        }
+
+        Page<MenuDto> dtoPage =
+                menuPage.map(this::toDto);
+
+        return Response.success(
+                "Menus retrieved successfully",
+                dtoPage);
 
     }
 
@@ -75,26 +129,13 @@ public class MenuServiceImpl implements MenuService {
         return Response.success("Menu created successfully", responseDto);
 
     }
-    @Override
-    public Response<List<MenuDto>> getAllMenus() {
 
-        List<MenuDto> menus = menuRepository.findAll()
-                .stream()
-                .map(this::toDto)
-                .toList();
-
-        return Response.success(
-                "Menus retrieved successfully",
-                menus
-        );
-
-    }
     @Override
     public Response<MenuDto> getMenuById(Long id) {
 
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Menu not found"));
+                        new MenuNotFoundException("Menu not found"));
 
         return Response.success(
                 "Menu retrieved successfully",

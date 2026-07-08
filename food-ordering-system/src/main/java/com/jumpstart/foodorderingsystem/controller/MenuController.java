@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.data.domain.Page;
 
 @RestController
 @RequestMapping("/api/menu")
@@ -24,11 +25,33 @@ public class MenuController {
 
         return ResponseEntity.ok(menuService.createMenu(dto));
     }
+
     @GetMapping
-    public ResponseEntity<Response<List<MenuDto>>> getAllMenus() {
+    public ResponseEntity<Response<Page<MenuDto>>> getAllMenus(
+
+            @RequestParam(required = false)
+            Long categoryId,
+
+            @RequestParam(required = false)
+            String search,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(defaultValue = "id,asc")
+            String sort) {
 
         return ResponseEntity.ok(
-                menuService.getAllMenus()
+                menuService.getAllMenus(
+                        categoryId,
+                        search,
+                        page,
+                        size,
+                        sort
+                )
         );
 
     }
