@@ -7,10 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/menus")
+@RequestMapping("/api/menu")
 public class MenuController {
 
     private final MenuService menuService;
@@ -24,18 +22,5 @@ public class MenuController {
             @Valid @RequestBody MenuDto dto) {
 
         return ResponseEntity.ok(menuService.createMenu(dto));
-    }
-
-    @GetMapping
-    public ResponseEntity<Response<List<MenuDto>>> getMenus() {
-
-        return ResponseEntity.ok(menuService.getAllMenus());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Response<MenuDto>> getMenu(
-            @PathVariable Long id) {
-
-        return ResponseEntity.ok(menuService.getMenuById(id));
     }
 }
