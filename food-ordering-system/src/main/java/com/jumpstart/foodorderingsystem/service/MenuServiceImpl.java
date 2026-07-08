@@ -8,6 +8,7 @@ import com.jumpstart.foodorderingsystem.repository.MenuRepository;
 import com.jumpstart.foodorderingsystem.dto.MenuDto;
 import com.jumpstart.foodorderingsystem.response.Response;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 
 @Service
@@ -56,6 +57,7 @@ public class MenuServiceImpl implements MenuService {
                 .build();
 
     }
+
     @Override
     public Response<MenuDto> createMenu(MenuDto dto) {
 
@@ -71,6 +73,73 @@ public class MenuServiceImpl implements MenuService {
         MenuDto responseDto = toDto(savedMenu);
 
         return Response.success("Menu created successfully", responseDto);
+
+    }
+    @Override
+    public Response<List<MenuDto>> getAllMenus() {
+
+        List<MenuDto> menus = menuRepository.findAll()
+                .stream()
+                .map(this::toDto)
+                .toList();
+
+        return Response.success(
+                "Menus retrieved successfully",
+                menus
+        );
+
+    }
+    @Override
+    public Response<MenuDto> getMenuById(Long id) {
+
+        Menu menu = menuRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Menu not found"));
+
+        return Response.success(
+                "Menu retrieved successfully",
+                toDto(menu)
+        );
+
+    }
+    @Override
+    public Response<MenuDto> updateMenu(Long id, MenuDto dto) {
+
+        Menu menu = menuRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Menu not found"));
+
+        Category category = categoryRepository.findById(dto.getCategoryId())
+                .orElseThrow(() ->
+                        new CategoryNotFoundException("Category not found"));
+
+        menu.setName(dto.getName());
+        menu.setDescription(dto.getDescription());
+        menu.setPrice(dto.getPrice());
+        menu.setImageUrl(dto.getImageUrl());
+        menu.setCategory(category);
+
+        Menu updated = menuRepository.save(menu);
+
+        return Response.success(
+                "Menu updated successfully",
+                toDto(updated)
+        );
+
+    }
+    @Override
+    public Response<String> deleteMenu(Long id) {
+
+        Menu menu = menuRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Menu not found"));
+
+        menuRepository.delete(menu);
+
+        return Response.success(
+                "Menu deleted successfully",
+                "Deleted"
+        );
 
     }
 
