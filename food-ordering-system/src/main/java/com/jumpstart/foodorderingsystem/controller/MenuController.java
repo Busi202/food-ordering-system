@@ -6,7 +6,6 @@ import com.jumpstart.foodorderingsystem.service.MenuService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 import org.springframework.data.domain.Page;
 
 @RestController
@@ -55,15 +54,7 @@ public class MenuController {
         );
 
     }
-    @GetMapping("/{id}")
-    public ResponseEntity<Response<MenuDto>> getMenuById(
-            @PathVariable Long id) {
 
-        return ResponseEntity.ok(
-                menuService.getMenuById(id)
-        );
-
-    }
     @PutMapping("/{id}")
     public ResponseEntity<Response<MenuDto>> updateMenu(
 

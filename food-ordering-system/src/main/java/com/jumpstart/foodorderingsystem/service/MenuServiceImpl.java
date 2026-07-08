@@ -8,7 +8,6 @@ import com.jumpstart.foodorderingsystem.repository.MenuRepository;
 import com.jumpstart.foodorderingsystem.dto.MenuDto;
 import com.jumpstart.foodorderingsystem.response.Response;
 import org.springframework.stereotype.Service;
-import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -148,7 +147,7 @@ public class MenuServiceImpl implements MenuService {
 
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Menu not found"));
+                        new MenuNotFoundException("Menu not found"));
 
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() ->
@@ -173,7 +172,7 @@ public class MenuServiceImpl implements MenuService {
 
         Menu menu = menuRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Menu not found"));
+                        new MenuNotFoundException("Menu not found"));
 
         menuRepository.delete(menu);
 

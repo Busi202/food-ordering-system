@@ -3,9 +3,6 @@ package com.jumpstart.foodorderingsystem.service;
 import com.jumpstart.foodorderingsystem.dto.MenuDto;
 import com.jumpstart.foodorderingsystem.response.Response;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 public interface MenuService {
 
